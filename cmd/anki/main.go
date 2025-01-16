@@ -2,18 +2,24 @@ package main
 
 import (
 	"context"
-	"log"
+	logBase "log"
 
 	"github.com/mnsavag/anki.git/internal/anki"
 	"github.com/mnsavag/anki.git/internal/anki/config"
+	"github.com/mnsavag/anki.git/internal/lib/log"
 )
 
 func main() {
 	cfg, err := config.NewConfig()
 	if err != nil {
-		log.Fatalf("failed to init config, %s", err.Error())
+		logBase.Fatalln(err)
 	}
 
-	app := anki.NewApp(cfg)
+	logger, err := log.NewLogger(&cfg.Logger)
+	if err != nil {
+		logBase.Fatalln(err)
+	}
+
+	app := anki.NewApp(cfg, logger)
 	app.Start(context.Background())
 }

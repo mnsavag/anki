@@ -1,10 +1,15 @@
 package config
 
-import "github.com/caarlos0/env/v11"
+import (
+	"github.com/caarlos0/env/v11"
+	"github.com/mnsavag/anki.git/internal/lib/log"
+)
 
 type Config struct {
 	Service  `envPrefix:"SERVICE_"`
 	Database `envPrefix:"DATABASE_"`
+
+	Logger log.Config
 }
 
 type Service struct {

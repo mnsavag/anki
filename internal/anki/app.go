@@ -3,21 +3,23 @@ package anki
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"github.com/mnsavag/anki.git/internal/anki/config"
 	apphttp "github.com/mnsavag/anki.git/internal/anki/http"
 	"github.com/mnsavag/anki.git/internal/anki/repository/sqlite"
+	"github.com/mnsavag/anki.git/internal/lib/log"
 )
 
 type App struct {
 	cfg        config.Config
 	httpServer *apphttp.Server
+	logger     *log.Logger
 }
 
-func NewApp(cfg config.Config) *App {
+func NewApp(cfg config.Config, logger *log.Logger) *App {
 	return &App{
-		cfg: cfg,
+		cfg:    cfg,
+		logger: logger,
 	}
 }
 
@@ -25,13 +27,10 @@ func (a *App) Start(ctx context.Context) error {
 	// storage
 	_, err := sqlite.NewSqliteConn(a.cfg.Database.DSN)
 	if err != nil {
-		log.Fatalf("failed to init storage, %s", err.Error())
+		return fmt.Errorf("storage: %w", err)
 	}
 
 	// server
 	a.httpServer = apphttp.NewServer(a.cfg)
-	if err := a.httpServer.Start(); err != nil {
-		fmt.Println("Server start error")
-	}
-	return nil
+	return a.httpServer.Start()
 }
