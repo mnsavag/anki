@@ -1,0 +1,114 @@
+syntax = "proto3";
+package anki.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/api/field_behavior.proto";
+import "deck.proto";
+
+option go_package = "github.com/mnsavag/anki.git/pkg/api/v1";
+
+service AnkiServiceV1 {
+    // Deck
+    rpc CreateDeck(CreateDeckRequest) returns (CreateDeckResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/anki/decks",
+            body: "*"
+        };
+    };
+
+    rpc UpdateDeck(UpdateDeckRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            patch: "/api/v1/anki/decks/{id}",
+            body: "*"
+        };
+    };
+
+    rpc DeleteDeck(DeleteDeckRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/v1/anki/decks/{id}",
+        };
+    };
+
+    rpc GetDeckById(GetDeckByIdRequest) returns (GetDeckByIdResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/anki/decks/{id}"
+        };
+    };
+
+    // Card
+    rpc CreateCard(CreateCardRequest) returns (CreateCardResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/anki/decks/{deck_id}/cards",
+            body: "*"
+        };
+    };
+
+    rpc UpdateCard(UpdateCardRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            patch: "/api/v1/anki/decks/{deck_id}/cards/{card_id}",
+            body: "*"
+        };
+    };
+
+    rpc DeleteCard(DeleteCardRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/api/v1/anki/decks/{deck_id}/cards/{card_id}",
+        };
+    };
+}
+
+// Deck
+message CreateDeckRequest {
+    string topic = 1 [(google.api.field_behavior) = REQUIRED];
+    string description = 2 [(google.api.field_behavior) = REQUIRED];
+    repeated string references = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message CreateDeckResponse {
+    string id = 1;
+}
+
+message UpdateDeckRequest {
+    string id = 1 [(google.api.field_behavior) = REQUIRED];
+    string topic = 2 [(google.api.field_behavior) = OPTIONAL];
+    string description = 3 [(google.api.field_behavior) = OPTIONAL];
+    repeated string references = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message DeleteDeckRequest {
+    string id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message GetDeckByIdRequest {
+    string id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message GetDeckByIdResponse {
+    Deck deck = 1 [(google.api.field_behavior) = REQUIRED];;
+}
+
+// Card
+message CreateCardRequest {
+    string deck_id = 1 [(google.api.field_behavior) = REQUIRED];;
+    string question = 2 [(google.api.field_behavior) = REQUIRED];
+    string answer = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+message CreateCardResponse {
+    string id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+message UpdateCardRequest {
+    string deck_id = 1 [(google.api.field_behavior) = REQUIRED];
+    string card_id = 2 [(google.api.field_behavior) = REQUIRED];
+    string question = 3 [(google.api.field_behavior) = OPTIONAL];
+    string answer = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message DeleteCardRequest {
+    string deck_id = 1 [(google.api.field_behavior) = REQUIRED];
+    string card_id = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+//protoc --proto_path=./api --go_out=./pkg/api/ --go_opt=paths=source_relative  --go-grpc_out ./pkg/api --go-grpc_opt=paths=source_relative --grpc-gateway_out ./pkg/api --grpc-gateway_opt paths=source_relative --openapi_out ./api/v1/ --openapi_opt=title="AnkiService API" ./api/v1/anki-service.proto

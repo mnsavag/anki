@@ -15,9 +15,11 @@ func NewLogger(conf *Config) (*Logger, error) {
 		return nil, err
 	}
 
-	var log *Logger
+	log := &Logger{
+		logger: &slog.Logger{},
+	}
 
-	switch conf.Env {
+	switch conf.LogLevel {
 	case string(local):
 		log.logger = slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
 	case string(dev):

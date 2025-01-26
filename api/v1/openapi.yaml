@@ -1,0 +1,311 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: AnkiService API
+    version: 0.0.1
+paths:
+    /api/v1/anki/decks:
+        post:
+            tags:
+                - AnkiServiceV1
+            description: Deck
+            operationId: AnkiServiceV1_CreateDeck
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateDeckRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateDeckResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v1/anki/decks/{deckId}/cards:
+        post:
+            tags:
+                - AnkiServiceV1
+            description: Card
+            operationId: AnkiServiceV1_CreateCard
+            parameters:
+                - name: deckId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateCardRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/CreateCardResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v1/anki/decks/{deckId}/cards/{cardId}:
+        delete:
+            tags:
+                - AnkiServiceV1
+            operationId: AnkiServiceV1_DeleteCard
+            parameters:
+                - name: deckId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: cardId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content: {}
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        patch:
+            tags:
+                - AnkiServiceV1
+            operationId: AnkiServiceV1_UpdateCard
+            parameters:
+                - name: deckId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: cardId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateCardRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content: {}
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/v1/anki/decks/{id}:
+        get:
+            tags:
+                - AnkiServiceV1
+            operationId: AnkiServiceV1_GetDeckById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetDeckByIdResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        delete:
+            tags:
+                - AnkiServiceV1
+            operationId: AnkiServiceV1_DeleteDeck
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content: {}
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        patch:
+            tags:
+                - AnkiServiceV1
+            operationId: AnkiServiceV1_UpdateDeck
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UpdateDeckRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content: {}
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+components:
+    schemas:
+        CreateCardRequest:
+            required:
+                - deckId
+                - question
+                - answer
+            type: object
+            properties:
+                deckId:
+                    type: string
+                question:
+                    type: string
+                answer:
+                    type: string
+            description: Card
+        CreateCardResponse:
+            required:
+                - id
+            type: object
+            properties:
+                id:
+                    type: string
+        CreateDeckRequest:
+            required:
+                - topic
+                - description
+            type: object
+            properties:
+                topic:
+                    type: string
+                description:
+                    type: string
+                references:
+                    type: array
+                    items:
+                        type: string
+            description: Deck
+        CreateDeckResponse:
+            type: object
+            properties:
+                id:
+                    type: string
+        Deck:
+            required:
+                - topic
+                - description
+                - references
+            type: object
+            properties:
+                topic:
+                    type: string
+                description:
+                    type: string
+                references:
+                    type: array
+                    items:
+                        type: string
+        GetDeckByIdResponse:
+            required:
+                - deck
+            type: object
+            properties:
+                deck:
+                    $ref: '#/components/schemas/Deck'
+        GoogleProtobufAny:
+            type: object
+            properties:
+                '@type':
+                    type: string
+                    description: The type of the serialized message.
+            additionalProperties: true
+            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        Status:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+                    format: int32
+                message:
+                    type: string
+                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GoogleProtobufAny'
+                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
+            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
+        UpdateCardRequest:
+            required:
+                - deckId
+                - cardId
+            type: object
+            properties:
+                deckId:
+                    type: string
+                cardId:
+                    type: string
+                question:
+                    type: string
+                answer:
+                    type: string
+        UpdateDeckRequest:
+            required:
+                - id
+            type: object
+            properties:
+                id:
+                    type: string
+                topic:
+                    type: string
+                description:
+                    type: string
+                references:
+                    type: array
+                    items:
+                        type: string
+tags:
+    - name: AnkiServiceV1

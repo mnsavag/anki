@@ -1,0 +1,14 @@
+syntax = "proto3";
+package anki;
+
+import "google/api/field_behavior.proto";
+
+option go_package = "github.com/mnsavag/anki.git/api";
+
+message Deck {
+    string topic = 1 [(google.api.field_behavior) = REQUIRED];
+    string description = 2 [(google.api.field_behavior) = REQUIRED];
+    repeated string references = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// protoc --proto_path=./api --go_out=./pkg/api/ --go_opt=paths=source_relative  --go-grpc_out ./pkg/api/ --go-grpc_opt=paths=source_relative ./api/*.proto
