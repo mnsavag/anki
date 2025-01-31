@@ -1,9 +1,23 @@
 package log
 
-type Environment string
+import "log/slog"
 
 const (
-	local Environment = "local"
-	dev   Environment = "dev"
-	prod  Environment = "prod"
+	encodingTypePlain string = "PLAIN"
+	encodingTypeJSON  string = "JSON"
 )
+
+const (
+	LevelDebugString = "DEBUG"
+	LevelInfoString  = "INFO"
+	LevelWarnString  = "WARN"
+	LevelErrorString = "ERROR"
+)
+
+// DEBUG INFO WARN ERROR
+var envLevelsMapping = map[string]slog.Level{
+	LevelDebugString: slog.LevelDebug,
+	LevelInfoString:  slog.LevelInfo,
+	LevelWarnString:  slog.LevelWarn,
+	LevelErrorString: slog.LevelError,
+}
