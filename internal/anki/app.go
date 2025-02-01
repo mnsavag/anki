@@ -9,6 +9,7 @@ import (
 	appgrpc "github.com/mnsavag/anki.git/internal/anki/grpc"
 	apphttp "github.com/mnsavag/anki.git/internal/anki/http"
 	"github.com/mnsavag/anki.git/internal/anki/repository/sqlite"
+	"github.com/mnsavag/anki.git/internal/anki/service"
 	"github.com/mnsavag/anki.git/internal/lib/log"
 
 	"github.com/pkg/errors"
@@ -36,9 +37,14 @@ func (a *App) Init(ctx context.Context) error {
 		return fmt.Errorf("storage: %w", err)
 	}
 
+	// ankiService
+	ankiService := service.NewService(
+		a.logger.WithField("component", "service"),
+	)
+
 	// grpc server
 	a.grpcServer = appgrpc.NewServer(a.cfg, a.logger)
-	apiServer := api.NewServer(a.logger)
+	apiServer := api.NewServer(a.logger, ankiService)
 	a.grpcServer.RegisterAnkiV1(apiServer)
 
 	// http server
