@@ -1,6 +1,6 @@
 package log
 
-import "log/slog"
+import "github.com/sirupsen/logrus"
 
 const (
 	encodingTypePlain string = "PLAIN"
@@ -15,9 +15,9 @@ const (
 )
 
 // DEBUG INFO WARN ERROR
-var envLevelsMapping = map[string]slog.Level{
-	LevelDebugString: slog.LevelDebug,
-	LevelInfoString:  slog.LevelInfo,
-	LevelWarnString:  slog.LevelWarn,
-	LevelErrorString: slog.LevelError,
+var envLevelsMapping = map[string]logrus.Level{
+	LevelDebugString: logrus.DebugLevel,
+	LevelInfoString:  logrus.InfoLevel,
+	LevelWarnString:  logrus.WarnLevel,
+	LevelErrorString: logrus.ErrorLevel,
 }

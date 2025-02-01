@@ -2,7 +2,6 @@ package log
 
 import (
 	"bytes"
-	"log/slog"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -23,8 +22,9 @@ func (s *LoggerSuite) TestWithField() {
 		LogLevel:     LevelDebugString,
 		EncodingType: encodingTypeJSON,
 	}
-	log := new(Logger)
-	log.logger = slog.New(newHandler(&conf, &buf))
+	log, err := NewLogger(&conf)
+	s.Require().NoError(err)
+	log.SetOutput(&buf)
 
 	// act
 	key := "service"

@@ -2,14 +2,16 @@ package log
 
 import (
 	"fmt"
-	"log/slog"
+	"io"
 	"os"
 
 	"github.com/mnsavag/anki.git/internal/lib/log/fields"
+	"github.com/sirupsen/logrus"
 )
 
 type Logger struct {
-	logger *slog.Logger
+	logger *logrus.Logger
+	entry  *logrus.Entry
 	conf   *Config
 }
 
@@ -20,34 +22,38 @@ func NewLogger(conf *Config) (*Logger, error) {
 
 	log := new(Logger)
 	log.conf = conf
-	log.logger = slog.New(newHandler(log.conf, os.Stdout))
-	log.setPrefix()
+
+	log.logger = logrus.New()
+	log.logger.Out = os.Stdout
+	log.logger.Formatter = newFormatter(conf)
+	log.logger.Level = envLevelsMapping[log.conf.LogLevel]
+	log.entry = logrus.NewEntry(log.logger)
+
+	if log.conf.Prefix != "" {
+		log = log.WithField("service", log.conf.Prefix)
+	}
 
 	return log, nil
 }
 
-func (l *Logger) setPrefix() {
-	if l.conf.Prefix != "" {
-		l = l.WithField("service", l.conf.Prefix)
-	}
-}
-
 func (l *Logger) Info(v ...any) {
-	l.logger.Info(fmt.Sprint(v...))
+	l.entry.Info(fmt.Sprint(v...))
 }
 
 func (l *Logger) WithField(key string, value any) *Logger {
 	return &Logger{
-		logger: l.logger.With(slog.Any(key, value)),
+		logger: l.logger,
+		entry:  l.logger.WithField(key, value),
 		conf:   l.conf,
 	}
 }
 
 func (l *Logger) WithFields(fields map[string]any) *Logger {
-	for key, val := range fields {
-		l = l.WithField(key, val)
+	return &Logger{
+		logger: l.logger,
+		entry:  l.logger.WithFields(fields),
+		conf:   l.conf,
 	}
-	return l
 }
 
 func (l *Logger) WithError(err error) *Logger {
@@ -56,4 +62,8 @@ func (l *Logger) WithError(err error) *Logger {
 	}
 
 	return l.WithField(fields.Error, err.Error())
+}
+
+func (l *Logger) SetOutput(w io.Writer) {
+	l.logger.SetOutput(w)
 }
