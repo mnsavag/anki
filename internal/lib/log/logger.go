@@ -1,6 +1,7 @@
 package log
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -40,6 +41,10 @@ func (l *Logger) Info(v ...any) {
 	l.entry.Info(fmt.Sprint(v...))
 }
 
+func (l *Logger) Error(v ...any) {
+	l.entry.Error(fmt.Sprint(v...))
+}
+
 func (l *Logger) WithField(key string, value any) *Logger {
 	return &Logger{
 		logger: l.logger,
@@ -66,4 +71,31 @@ func (l *Logger) WithError(err error) *Logger {
 
 func (l *Logger) SetOutput(w io.Writer) {
 	l.logger.SetOutput(w)
+}
+
+type ContextKey struct{}
+
+func WithContext(ctx context.Context, requestId string) context.Context {
+	return context.WithValue(ctx, ContextKey{}, requestId)
+}
+
+// WithContext adds requestID and other fields from context
+func (l *Logger) WithContext(ctx context.Context) *Logger {
+	fieldsMap := map[string]interface{}{}
+
+	val := ctx.Value(ContextKey{})
+	if val == nil {
+		return l
+	}
+
+	requestID, ok := val.(string)
+	if !ok {
+		return l
+	}
+
+	if requestID != "" {
+		fieldsMap[fields.RequestID] = requestID
+	}
+
+	return l.WithFields(fieldsMap)
 }

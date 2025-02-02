@@ -1,5 +1,6 @@
 package fields
 
 const (
-	Error = "err_message"
+	Error     = "err_message"
+	RequestID = "request_id"
 )

@@ -1,6 +1,12 @@
 package api
 
-import "context"
+import (
+	"context"
+
+	"github.com/mnsavag/anki.git/internal/anki/model"
+
+	"github.com/google/uuid"
+)
 
 type AnkiService interface {
 	CardExecutor
@@ -8,14 +14,14 @@ type AnkiService interface {
 }
 
 type CardExecutor interface {
-	CreateCard(ctx context.Context)
-	DeleteCard(ctx context.Context)
-	UpdateCard(ctx context.Context)
+	CreateCard(ctx context.Context, deckId uuid.UUID) (string, error)
+	DeleteCard(ctx context.Context, cardId uuid.UUID) error
+	UpdateCard(ctx context.Context, cardId uuid.UUID) error
 }
 
 type DeckExecutor interface {
-	CreateDeck(ctx context.Context)
-	DeleteDeck(ctx context.Context)
-	GetDeckById(ctx context.Context)
-	UpdateDeck(ctx context.Context)
+	CreateDeck(ctx context.Context, request model.CreateDeckRequest) (string, error)
+	DeleteDeck(ctx context.Context, id uuid.UUID) error
+	GetDeckById(ctx context.Context, id uuid.UUID) (model.Deck, error)
+	UpdateDeck(ctx context.Context, id uuid.UUID) error
 }
