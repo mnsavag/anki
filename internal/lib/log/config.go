@@ -10,6 +10,14 @@ type Config struct {
 	Prefix       string `env:"LOG_PREFIX"`
 }
 
+func NewDefaultConfig() *Config {
+	return &Config{
+		LogLevel:     LevelInfoString,
+		EncodingType: encodingTypeJSON,
+		Prefix:       "",
+	}
+}
+
 func (conf *Config) Validate() error {
 	return validator.New().Struct(conf)
 }

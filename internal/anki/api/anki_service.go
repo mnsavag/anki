@@ -1,3 +1,4 @@
+// mockgen -destination=./mock/anki_service_mock_generated.go -package=mock -source anki_service.go
 package api
 
 import (
