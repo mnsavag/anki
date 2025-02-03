@@ -32,14 +32,16 @@ func NewApp(cfg config.Config, logger *log.Logger) *App {
 
 func (a *App) Init(ctx context.Context) error {
 	// storage
-	_, err := sqlite.NewSqliteConn(a.cfg.Database.DSN)
+	dbConn, err := sqlite.NewSqliteConn(a.cfg.Database.DSN)
 	if err != nil {
 		return fmt.Errorf("storage: %w", err)
 	}
 
-	// ankiService
+	// server service repo
+	repo := sqlite.NewSqliteRepository(dbConn, *a.logger)
 	ankiService := service.NewService(
 		a.logger.WithField("component", "service"),
+		repo,
 	)
 
 	// grpc server

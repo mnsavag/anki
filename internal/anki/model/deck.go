@@ -1,13 +1,9 @@
 package model
 
-type CreateDeckRequest struct {
-	Topic       string
-	Description string
-	References  []string
-}
+import "github.com/google/uuid"
 
 type Deck struct {
-	Id          string
+	Id          uuid.UUID
 	Topic       string
 	Description string
 	References  []string

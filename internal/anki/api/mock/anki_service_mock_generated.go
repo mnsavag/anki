@@ -15,6 +15,7 @@ import (
 
 	uuid "github.com/google/uuid"
 	model "github.com/mnsavag/anki.git/internal/anki/model"
+	dto "github.com/mnsavag/anki.git/internal/anki/service/dto"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -43,33 +44,33 @@ func (m *MockAnkiService) EXPECT() *MockAnkiServiceMockRecorder {
 }
 
 // CreateCard mocks base method.
-func (m *MockAnkiService) CreateCard(ctx context.Context, deckId uuid.UUID) (string, error) {
+func (m *MockAnkiService) CreateCard(ctx context.Context, deckId uuid.UUID, card dto.CreateCardData) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateCard", ctx, deckId)
+	ret := m.ctrl.Call(m, "CreateCard", ctx, deckId, card)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateCard indicates an expected call of CreateCard.
-func (mr *MockAnkiServiceMockRecorder) CreateCard(ctx, deckId any) *gomock.Call {
+func (mr *MockAnkiServiceMockRecorder) CreateCard(ctx, deckId, card any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateCard", reflect.TypeOf((*MockAnkiService)(nil).CreateCard), ctx, deckId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateCard", reflect.TypeOf((*MockAnkiService)(nil).CreateCard), ctx, deckId, card)
 }
 
 // CreateDeck mocks base method.
-func (m *MockAnkiService) CreateDeck(ctx context.Context, request model.CreateDeckRequest) (string, error) {
+func (m *MockAnkiService) CreateDeck(ctx context.Context, createData dto.CreateDeckData) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateDeck", ctx, request)
+	ret := m.ctrl.Call(m, "CreateDeck", ctx, createData)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateDeck indicates an expected call of CreateDeck.
-func (mr *MockAnkiServiceMockRecorder) CreateDeck(ctx, request any) *gomock.Call {
+func (mr *MockAnkiServiceMockRecorder) CreateDeck(ctx, createData any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDeck", reflect.TypeOf((*MockAnkiService)(nil).CreateDeck), ctx, request)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDeck", reflect.TypeOf((*MockAnkiService)(nil).CreateDeck), ctx, createData)
 }
 
 // DeleteCard mocks base method.
@@ -116,31 +117,31 @@ func (mr *MockAnkiServiceMockRecorder) GetDeckById(ctx, id any) *gomock.Call {
 }
 
 // UpdateCard mocks base method.
-func (m *MockAnkiService) UpdateCard(ctx context.Context, cardId uuid.UUID) error {
+func (m *MockAnkiService) UpdateCard(ctx context.Context, cardId uuid.UUID, card dto.UpdateCardData) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateCard", ctx, cardId)
+	ret := m.ctrl.Call(m, "UpdateCard", ctx, cardId, card)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // UpdateCard indicates an expected call of UpdateCard.
-func (mr *MockAnkiServiceMockRecorder) UpdateCard(ctx, cardId any) *gomock.Call {
+func (mr *MockAnkiServiceMockRecorder) UpdateCard(ctx, cardId, card any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCard", reflect.TypeOf((*MockAnkiService)(nil).UpdateCard), ctx, cardId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCard", reflect.TypeOf((*MockAnkiService)(nil).UpdateCard), ctx, cardId, card)
 }
 
 // UpdateDeck mocks base method.
-func (m *MockAnkiService) UpdateDeck(ctx context.Context, id uuid.UUID) error {
+func (m *MockAnkiService) UpdateDeck(ctx context.Context, id uuid.UUID, deck dto.UpdateDeckData) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateDeck", ctx, id)
+	ret := m.ctrl.Call(m, "UpdateDeck", ctx, id, deck)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // UpdateDeck indicates an expected call of UpdateDeck.
-func (mr *MockAnkiServiceMockRecorder) UpdateDeck(ctx, id any) *gomock.Call {
+func (mr *MockAnkiServiceMockRecorder) UpdateDeck(ctx, id, deck any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDeck", reflect.TypeOf((*MockAnkiService)(nil).UpdateDeck), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDeck", reflect.TypeOf((*MockAnkiService)(nil).UpdateDeck), ctx, id, deck)
 }
 
 // MockCardExecutor is a mock of CardExecutor interface.
@@ -168,18 +169,18 @@ func (m *MockCardExecutor) EXPECT() *MockCardExecutorMockRecorder {
 }
 
 // CreateCard mocks base method.
-func (m *MockCardExecutor) CreateCard(ctx context.Context, deckId uuid.UUID) (string, error) {
+func (m *MockCardExecutor) CreateCard(ctx context.Context, deckId uuid.UUID, card dto.CreateCardData) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateCard", ctx, deckId)
+	ret := m.ctrl.Call(m, "CreateCard", ctx, deckId, card)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateCard indicates an expected call of CreateCard.
-func (mr *MockCardExecutorMockRecorder) CreateCard(ctx, deckId any) *gomock.Call {
+func (mr *MockCardExecutorMockRecorder) CreateCard(ctx, deckId, card any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateCard", reflect.TypeOf((*MockCardExecutor)(nil).CreateCard), ctx, deckId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateCard", reflect.TypeOf((*MockCardExecutor)(nil).CreateCard), ctx, deckId, card)
 }
 
 // DeleteCard mocks base method.
@@ -197,17 +198,17 @@ func (mr *MockCardExecutorMockRecorder) DeleteCard(ctx, cardId any) *gomock.Call
 }
 
 // UpdateCard mocks base method.
-func (m *MockCardExecutor) UpdateCard(ctx context.Context, cardId uuid.UUID) error {
+func (m *MockCardExecutor) UpdateCard(ctx context.Context, cardId uuid.UUID, card dto.UpdateCardData) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateCard", ctx, cardId)
+	ret := m.ctrl.Call(m, "UpdateCard", ctx, cardId, card)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // UpdateCard indicates an expected call of UpdateCard.
-func (mr *MockCardExecutorMockRecorder) UpdateCard(ctx, cardId any) *gomock.Call {
+func (mr *MockCardExecutorMockRecorder) UpdateCard(ctx, cardId, card any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCard", reflect.TypeOf((*MockCardExecutor)(nil).UpdateCard), ctx, cardId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCard", reflect.TypeOf((*MockCardExecutor)(nil).UpdateCard), ctx, cardId, card)
 }
 
 // MockDeckExecutor is a mock of DeckExecutor interface.
@@ -235,18 +236,18 @@ func (m *MockDeckExecutor) EXPECT() *MockDeckExecutorMockRecorder {
 }
 
 // CreateDeck mocks base method.
-func (m *MockDeckExecutor) CreateDeck(ctx context.Context, request model.CreateDeckRequest) (string, error) {
+func (m *MockDeckExecutor) CreateDeck(ctx context.Context, createData dto.CreateDeckData) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateDeck", ctx, request)
+	ret := m.ctrl.Call(m, "CreateDeck", ctx, createData)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateDeck indicates an expected call of CreateDeck.
-func (mr *MockDeckExecutorMockRecorder) CreateDeck(ctx, request any) *gomock.Call {
+func (mr *MockDeckExecutorMockRecorder) CreateDeck(ctx, createData any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDeck", reflect.TypeOf((*MockDeckExecutor)(nil).CreateDeck), ctx, request)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDeck", reflect.TypeOf((*MockDeckExecutor)(nil).CreateDeck), ctx, createData)
 }
 
 // DeleteDeck mocks base method.
@@ -279,15 +280,15 @@ func (mr *MockDeckExecutorMockRecorder) GetDeckById(ctx, id any) *gomock.Call {
 }
 
 // UpdateDeck mocks base method.
-func (m *MockDeckExecutor) UpdateDeck(ctx context.Context, id uuid.UUID) error {
+func (m *MockDeckExecutor) UpdateDeck(ctx context.Context, id uuid.UUID, deck dto.UpdateDeckData) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateDeck", ctx, id)
+	ret := m.ctrl.Call(m, "UpdateDeck", ctx, id, deck)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // UpdateDeck indicates an expected call of UpdateDeck.
-func (mr *MockDeckExecutorMockRecorder) UpdateDeck(ctx, id any) *gomock.Call {
+func (mr *MockDeckExecutorMockRecorder) UpdateDeck(ctx, id, deck any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDeck", reflect.TypeOf((*MockDeckExecutor)(nil).UpdateDeck), ctx, id)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDeck", reflect.TypeOf((*MockDeckExecutor)(nil).UpdateDeck), ctx, id, deck)
 }

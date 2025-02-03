@@ -96,7 +96,9 @@ func (s *Server) UpdateDeck(ctx context.Context, in *v1.UpdateDeckRequest) (*emp
 		return nil, status.Error(codes.InvalidArgument, "invalid deck id")
 	}
 
-	err = s.ankiService.UpdateDeck(ctx, deckId)
+	updateDeckData := toUpdateDeckData(in)
+
+	err = s.ankiService.UpdateDeck(ctx, deckId, updateDeckData)
 	if err != nil {
 		if errors.Is(err, service.ErrDeckNotFound) {
 			return &emptypb.Empty{}, nil
@@ -118,7 +120,9 @@ func (s *Server) CreateCard(ctx context.Context, in *v1.CreateCardRequest) (*v1.
 		return nil, status.Error(codes.InvalidArgument, "invalid deck id")
 	}
 
-	cardId, err := s.ankiService.CreateCard(ctx, deckId)
+	createCardData := toCreateCardData(in)
+
+	cardId, err := s.ankiService.CreateCard(ctx, deckId, createCardData)
 	if err != nil {
 		l.WithError(err).Error("CreateCard request error")
 		return nil, toGRPCError(err)
@@ -160,7 +164,9 @@ func (s *Server) UpdateCard(ctx context.Context, in *v1.UpdateCardRequest) (*emp
 		return nil, status.Error(codes.InvalidArgument, "invalid card id")
 	}
 
-	err = s.ankiService.UpdateCard(ctx, cardId)
+	mappedRequest := toUpdateCardData(in)
+
+	err = s.ankiService.UpdateCard(ctx, cardId, mappedRequest)
 	if err != nil {
 		if errors.Is(err, service.ErrCardNotFound) {
 			return &emptypb.Empty{}, nil

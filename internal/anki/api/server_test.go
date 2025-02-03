@@ -52,12 +52,13 @@ func (s *ServerSuite) TestGetDeckById() {
 		},
 	}
 
-	//act
 	s.ankiService.EXPECT().GetDeckById(gomock.Any(), deckUUID).Return(model.Deck{
 		Topic:       "topic",
 		Description: "desc",
 		References:  []string{"ref1", "ref2"},
 	}, nil)
+
+	//act
 	got, err := s.server.GetDeckById(
 		s.ctx,
 		&v1.GetDeckByIdRequest{
@@ -76,8 +77,9 @@ func (s *ServerSuite) TestGetDeckById_NotFound() {
 	deckUUID, _ := uuid.Parse(deckId)
 	want := &v1.GetDeckByIdResponse{}
 
-	//act
 	s.ankiService.EXPECT().GetDeckById(gomock.Any(), deckUUID).Return(model.Deck{}, service.ErrDeckNotFound)
+
+	//act
 	got, err := s.server.GetDeckById(
 		s.ctx,
 		&v1.GetDeckByIdRequest{
